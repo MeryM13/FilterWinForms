@@ -32,6 +32,9 @@ namespace FilterWinForms.FORMS
             this.dgProduct = new System.Windows.Forms.DataGridView();
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnPreviousPage = new System.Windows.Forms.Button();
+            this.btnNextPage = new System.Windows.Forms.Button();
+            this.PageLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgProduct)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,11 +64,43 @@ namespace FilterWinForms.FORMS
             this.label1.TabIndex = 3;
             this.label1.Text = "Фильтрация";
             // 
+            // btnPreviousPage
+            // 
+            this.btnPreviousPage.Location = new System.Drawing.Point(893, 581);
+            this.btnPreviousPage.Name = "btnPreviousPage";
+            this.btnPreviousPage.Size = new System.Drawing.Size(25, 25);
+            this.btnPreviousPage.TabIndex = 4;
+            this.btnPreviousPage.Text = "<";
+            this.btnPreviousPage.UseVisualStyleBackColor = true;
+            this.btnPreviousPage.Click += new System.EventHandler(this.btnPreviousPage_Click);
+            // 
+            // btnNextPage
+            // 
+            this.btnNextPage.Location = new System.Drawing.Point(924, 581);
+            this.btnNextPage.Name = "btnNextPage";
+            this.btnNextPage.Size = new System.Drawing.Size(25, 25);
+            this.btnNextPage.TabIndex = 5;
+            this.btnNextPage.Text = ">";
+            this.btnNextPage.UseVisualStyleBackColor = true;
+            this.btnNextPage.Click += new System.EventHandler(this.btnNextPage_Click);
+            // 
+            // PageLabel
+            // 
+            this.PageLabel.AutoSize = true;
+            this.PageLabel.Location = new System.Drawing.Point(592, 582);
+            this.PageLabel.Name = "PageLabel";
+            this.PageLabel.Size = new System.Drawing.Size(50, 22);
+            this.PageLabel.TabIndex = 6;
+            this.PageLabel.Text = "label2";
+            // 
             // ProductForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(961, 592);
+            this.ClientSize = new System.Drawing.Size(961, 618);
+            this.Controls.Add(this.PageLabel);
+            this.Controls.Add(this.btnNextPage);
+            this.Controls.Add(this.btnPreviousPage);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cmbType);
             this.Controls.Add(this.dgProduct);
@@ -74,6 +109,9 @@ namespace FilterWinForms.FORMS
             this.Controls.SetChildIndex(this.dgProduct, 0);
             this.Controls.SetChildIndex(this.cmbType, 0);
             this.Controls.SetChildIndex(this.label1, 0);
+            this.Controls.SetChildIndex(this.btnPreviousPage, 0);
+            this.Controls.SetChildIndex(this.btnNextPage, 0);
+            this.Controls.SetChildIndex(this.PageLabel, 0);
             ((System.ComponentModel.ISupportInitialize)(this.dgProduct)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -85,6 +123,9 @@ namespace FilterWinForms.FORMS
         private System.Windows.Forms.DataGridView dgProduct;
         private System.Windows.Forms.ComboBox cmbType;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnPreviousPage;
+        private System.Windows.Forms.Button btnNextPage;
+        private System.Windows.Forms.Label PageLabel;
     }
 }
 

@@ -12,13 +12,19 @@ namespace FilterWinForms.UTILS
     {
         static string ConnStr = ConnectionString.ConnStr;
 
-        public static DataSet GetAll()
+        public static DataSet GetProductByPage(string type, int page)
         {
             using (SqlConnection conn = new SqlConnection(ConnStr))
             {
                 conn.Open();
-                string query = "select * from demo.products";
+                string query = type=="Нет"? 
+                    "select * from demo.products" : 
+                    "select * from demo.products where [Тип_продукции] = @Type";
+                query += " order by [Артикул] offset @Page rows fetch next 20 rows only";
                 SqlDataAdapter ada = new SqlDataAdapter(query, conn);
+                if (type != "Нет")
+                    ada.SelectCommand.Parameters.AddWithValue("Type", type);
+                ada.SelectCommand.Parameters.AddWithValue("Page", (page - 1) * 20);
                 DataSet ds = new DataSet();
                 ada.Fill(ds);
                 return ds;
@@ -45,17 +51,25 @@ namespace FilterWinForms.UTILS
             }
         }
 
-        public static DataSet GetByType(string Type)
+        public static int GetMaxPages(string type)
         {
             using (SqlConnection conn = new SqlConnection(ConnStr))
             {
                 conn.Open();
-                string query = "select * from demo.products where [Тип_продукции] = @Type";
-                SqlDataAdapter ada = new SqlDataAdapter(query, conn);
-                ada.SelectCommand.Parameters.AddWithValue("Type", Type);
-                DataSet ds = new DataSet();
-                ada.Fill(ds);
-                return ds;
+                string query = type == "Нет" ?
+                    "select * from demo.products" :
+                    "select * from demo.products where [Тип_продукции] = @Type";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                if (type != "Нет")
+                    cmd.Parameters.AddWithValue("Type", type);
+                SqlDataReader rd = cmd.ExecuteReader();
+                int i = 0;
+                while (rd.Read())
+                {
+                    i++;
+                }
+                i = i % 20 == 0 ? i / 20 : i / 20 + 1;
+                return i;
             }
         }
     }

@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="LibParent">
       <HintPath>G:\Базы данных\CRUD_operation_test\LibParent\LibParent\bin\Debug\LibParent.dll</HintPath>
