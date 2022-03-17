@@ -14,15 +14,20 @@ namespace FilterWinForms.FORMS
     public partial class ProductForm : LibParent.ParentForm
     {
         int page = 1;
-        string type = "Нет";
+        string type;
+        string order;
         int maxPage;
+        string defStr = "Нет";
 
         public ProductForm()
         {
+            order = type = defStr;
             maxPage = ProductDataWork.GetMaxPages(type);
             InitializeComponent();
             CmbTypeInit();
+            CmbOrderByInit();
             GridFill();
+            rbtnUp.Checked = true;
         }
 
         private void CmbTypeInit()
@@ -30,7 +35,21 @@ namespace FilterWinForms.FORMS
             try
             {
                 cmbType.Items.AddRange(ProductDataWork.GetTypes());
-                cmbType.SelectedItem = "Нет";
+                cmbType.SelectedItem = type;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void CmbOrderByInit()
+        {
+            try
+            {
+                cmbOrderBy.Items.AddRange(new string[] { "Нет", "Наименование_продукции", "Минимальная_стоимость_для_агента", "Номер_цеха_для_производства" });
+                //cmbOrderBy.Items.AddRange(ProductDataWork.GetColumnsForSort());
+                cmbOrderBy.SelectedItem = order;
             }
             catch (Exception ex)
             {
@@ -42,7 +61,10 @@ namespace FilterWinForms.FORMS
         {
             try
             {
-                dgProduct.DataSource = ProductDataWork.GetProductByPage(type, page).Tables[0];
+                Console.WriteLine();
+                Console.WriteLine(type);
+                Console.WriteLine(order);
+                dgProduct.DataSource = ProductDataWork.GetProductByPage(type, page, order, rbtnUp.Checked? true: false, defStr).Tables[0];
                 PageLabel.Text = page.ToString();
             }
             catch (Exception ex)
@@ -50,6 +72,12 @@ namespace FilterWinForms.FORMS
                 MessageBox.Show(ex.Message);
             }
 
+        }
+
+        private void cmbOrderBy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            order = cmbOrderBy.SelectedItem.ToString();
+            GridFill();
         }
 
         private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
@@ -173,6 +201,24 @@ namespace FilterWinForms.FORMS
         {
             Button button = sender as Button;
             page = Int32.Parse(button.Text);
+            GridFill();
+        }
+
+        private void rbtnUp_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbtnUp.Checked)
+                rbtnDesc.Checked = false;
+            else
+                rbtnDesc.Checked = true;
+            GridFill();
+        }
+
+        private void rbtnDesc_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbtnDesc.Checked)
+                rbtnUp.Checked = false;
+            else
+                rbtnUp.Checked = true;
             GridFill();
         }
     }
