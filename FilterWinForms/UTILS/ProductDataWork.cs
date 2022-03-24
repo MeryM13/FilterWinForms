@@ -12,41 +12,26 @@ namespace FilterWinForms.UTILS
     {
         static string ConnStr = ConnectionString.ConnStr;
 
-        public static DataSet GetProductByPage(string type, int page, string order, bool up, string defStr)
+        public static DataSet GetProductByPage(string type, int page, string order, bool up, string defStr, string search)
         {
             using (SqlConnection conn = new SqlConnection(ConnStr))
             {
                 conn.Open();
-                string query = type=="Нет"? 
-                    "select * from demo.products" : 
+                string query = type==defStr? 
+                    "select * from demo.products" :
                     "select * from demo.products where [Тип_продукции] = @Type";
-                query += " ORDER BY " +
-                    "CASE WHEN @SortDirection = 'A' THEN " +
-                    "CASE WHEN @SortBy = 'Артикул' THEN Артикул " +
-                    "WHEN @SortBy = 'Наименование_продукции' THEN [Наименование_продукции] " +
-                    "WHEN @SortBy = 'Номер_цеха_для_производства' THEN [Номер_цеха_для_производства] " +
-                    "WHEN @SortBy = 'Минимальная_стоимость_для_агента' THEN [Минимальная_стоимость_для_агента] " +
-                    "END " +
-                    "END ASC, " +
-                    "CASE WHEN @SortDirection = 'D' THEN " +
-                    "CASE WHEN @SortBy = 'Артикул' THEN Артикул " +
-                    "WHEN @SortBy = 'Наименование_продукции' THEN [Наименование_продукции] " +
-                    "WHEN @SortBy = 'Номер_цеха_для_производства' THEN [Номер_цеха_для_производства] " +
-                    "WHEN @SortBy = 'Минимальная_стоимость_для_агента' THEN [Минимальная_стоимость_для_агента] " +
-                    "END " +
-                    "END DESC";
+                if (!String.IsNullOrEmpty(search))
+                {
+                    query += type == defStr ? " where" : " and";
+                    query += " [Наименование_продукции] like '" + search + "%'";
+                }
+                query += order == "Отсутствует" ? " order by 'Артикул'" : " order by '"+order+"'";
+                if (!up)
+                    query += " desc";
                 query += " offset @Page rows fetch next 20 rows only";
                 SqlDataAdapter ada = new SqlDataAdapter(query, conn);
                 if (type != defStr)
                     ada.SelectCommand.Parameters.AddWithValue("Type", type);
-                if (up)
-                    ada.SelectCommand.Parameters.AddWithValue("SortDirection", "A");
-                else
-                    ada.SelectCommand.Parameters.AddWithValue("SortDirection", "D");
-                if (order == defStr)
-                    ada.SelectCommand.Parameters.AddWithValue("SortBy", "Артикул");
-                else
-                    ada.SelectCommand.Parameters.AddWithValue("SortBy", order);
                 ada.SelectCommand.Parameters.AddWithValue("Page", (page - 1) * 20);
                 DataSet ds = new DataSet();
                 ada.Fill(ds);
@@ -54,7 +39,7 @@ namespace FilterWinForms.UTILS
             }
         }
 
-        public static string[] GetTypes()
+        public static List<string> GetTypes(string defStr)
         {
             using (SqlConnection conn = new SqlConnection(ConnStr))
             {
@@ -63,18 +48,17 @@ namespace FilterWinForms.UTILS
                 SqlCommand cmd = new SqlCommand(query, conn);
                 SqlDataReader rd = cmd.ExecuteReader();
                 int i = 1;
-                string[] arr = new string[6];
-                arr[0] = "Нет";
+                List<string> arr = new List<string>();
+                arr.Add(defStr);
                 while (rd.Read())
                 {
-                    arr[i] = rd["Тип_продукции"].ToString();
-                    i++;
+                    arr.Add(rd["Тип_продукции"].ToString());
                 }
                 return arr;
             }
         }
 
-        public static string[] GetColumnsForSort()
+        public static List<string> GetColumnsForSort(string defStr)
         {
             using (SqlConnection conn = new SqlConnection(ConnStr))
             {
@@ -83,27 +67,31 @@ namespace FilterWinForms.UTILS
                 SqlCommand cmd = new SqlCommand(query, conn);
                 SqlDataReader rd = cmd.ExecuteReader();
                 int i = 1;
-                string[] arr = new string[8];
-                arr[0] = "Нет";
+                List<string> arr = new List<string>();
+                arr.Add(defStr);
                 while (rd.Read())
                 {
-                    arr[i] = rd["COLUMN_NAME"].ToString();
-                    i++;
+                   arr.Add(rd["COLUMN_NAME"].ToString());
                 }
                 return arr;
             }
         }
 
-        public static int GetMaxPages(string type)
+        public static int GetMaxPages(string type, string defStr, string search)
         {
             using (SqlConnection conn = new SqlConnection(ConnStr))
             {
                 conn.Open();
-                string query = type == "Нет" ?
+                string query = type == defStr ?
                     "select * from demo.products" :
                     "select * from demo.products where [Тип_продукции] = @Type";
+                if (!String.IsNullOrEmpty(search))
+                {
+                    query += type == defStr ? " where" : " and";
+                    query += " [Наименование_продукции] like '" + search + "%'";
+                }
                 SqlCommand cmd = new SqlCommand(query, conn);
-                if (type != "Нет")
+                if (type != defStr)
                     cmd.Parameters.AddWithValue("Type", type);
                 SqlDataReader rd = cmd.ExecuteReader();
                 int i = 0;

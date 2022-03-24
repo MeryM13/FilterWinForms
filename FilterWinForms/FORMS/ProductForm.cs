@@ -17,12 +17,15 @@ namespace FilterWinForms.FORMS
         string type;
         string order;
         int maxPage;
-        string defStr = "Нет";
+        string searchStr;
+        string defStr = "Все типы";
+        int fill = 0;
 
         public ProductForm()
         {
-            order = type = defStr;
-            maxPage = ProductDataWork.GetMaxPages(type);
+            type = defStr;
+            order = "Отсутствует";
+            maxPage = ProductDataWork.GetMaxPages(type, defStr, searchStr);
             InitializeComponent();
             CmbTypeInit();
             CmbOrderByInit();
@@ -34,7 +37,8 @@ namespace FilterWinForms.FORMS
         {
             try
             {
-                cmbType.Items.AddRange(ProductDataWork.GetTypes());
+                foreach (string item in ProductDataWork.GetTypes(defStr))
+                    cmbType.Items.Add(item);
                 cmbType.SelectedItem = type;
             }
             catch (Exception ex)
@@ -47,8 +51,10 @@ namespace FilterWinForms.FORMS
         {
             try
             {
-                cmbOrderBy.Items.AddRange(new string[] { "Нет", "Наименование_продукции", "Минимальная_стоимость_для_агента", "Номер_цеха_для_производства" });
-                //cmbOrderBy.Items.AddRange(ProductDataWork.GetColumnsForSort());
+                cmbOrderBy.Items.Add(order);
+                cmbOrderBy.Items.Add("Наименование_продукции");
+                cmbOrderBy.Items.Add("Номер_цеха_для_производства");
+                cmbOrderBy.Items.Add("Минимальная_стоимость_для_агента");
                 cmbOrderBy.SelectedItem = order;
             }
             catch (Exception ex)
@@ -61,11 +67,39 @@ namespace FilterWinForms.FORMS
         {
             try
             {
-                Console.WriteLine();
-                Console.WriteLine(type);
-                Console.WriteLine(order);
-                dgProduct.DataSource = ProductDataWork.GetProductByPage(type, page, order, rbtnUp.Checked? true: false, defStr).Tables[0];
+                dgProduct.DataSource = ProductDataWork.GetProductByPage(type, page, order, rbtnUp.Checked? true: false, defStr, searchStr).Tables[0];
                 PageLabel.Text = page.ToString();
+                if (fill == 0)
+                {
+                    DataGridViewButtonColumn update = new DataGridViewButtonColumn
+                    {
+                        Name = "Update",
+                        Text = "Редактировать",
+                        HeaderText = "Редактировать",
+                        UseColumnTextForButtonValue = true
+                    };
+                    dgProduct.Columns.Add(update);
+                    DataGridViewButtonColumn materials = new DataGridViewButtonColumn
+                    {
+                        Name = "Materials",
+                        Text = "Материалы",
+                        HeaderText = "Материалы",
+                        UseColumnTextForButtonValue = true
+                    };
+                    dgProduct.Columns.Add(materials);
+                    DataGridViewButtonColumn photo = new DataGridViewButtonColumn
+                    {
+                        Name = "Photo",
+                        Text = "Фото",
+                        HeaderText = "Фото",
+                        UseColumnTextForButtonValue = true
+                    };
+                    dgProduct.Columns.Add(photo);
+                }
+                dgProduct.AllowUserToResizeColumns = true;
+                dgProduct.AllowUserToResizeRows = true;
+                dgProduct.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader);
+                fill++;
             }
             catch (Exception ex)
             {
@@ -84,7 +118,7 @@ namespace FilterWinForms.FORMS
         {
             type = cmbType.SelectedItem.ToString();
             PageButtonsDelete();
-            maxPage = ProductDataWork.GetMaxPages(type);
+            maxPage = ProductDataWork.GetMaxPages(type, defStr, searchStr);
             PageButtonsInit();
             GridFill();
         }
@@ -206,19 +240,20 @@ namespace FilterWinForms.FORMS
 
         private void rbtnUp_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbtnUp.Checked)
-                rbtnDesc.Checked = false;
-            else
-                rbtnDesc.Checked = true;
             GridFill();
         }
 
         private void rbtnDesc_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbtnDesc.Checked)
-                rbtnUp.Checked = false;
-            else
-                rbtnUp.Checked = true;
+            GridFill();
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            searchStr = txtSearch.Text;
+            PageButtonsDelete();
+            maxPage = ProductDataWork.GetMaxPages(type, defStr, searchStr);
+            PageButtonsInit();
             GridFill();
         }
     }
