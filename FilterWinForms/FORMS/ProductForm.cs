@@ -19,7 +19,6 @@ namespace FilterWinForms.FORMS
         int maxPage;
         string searchStr;
         string defStr = "Все типы";
-        int fill = 0;
 
         public ProductForm()
         {
@@ -29,7 +28,7 @@ namespace FilterWinForms.FORMS
             InitializeComponent();
             CmbTypeInit();
             CmbOrderByInit();
-            GridFill();
+            ProductsFill();
             rbtnUp.Checked = true;
         }
 
@@ -63,43 +62,14 @@ namespace FilterWinForms.FORMS
             }
         }
 
-        private void GridFill()
+        private void ProductsFill()
         {
             try
             {
-                dgProduct.DataSource = ProductDataWork.GetProductByPage(type, page, order, rbtnUp.Checked? true: false, defStr, searchStr).Tables[0];
-                PageLabel.Text = page.ToString();
-                if (fill == 0)
+                DataTable productTable = ProductDataWork.GetProductByPage(type, page, order, rbtnUp.Checked? true: false, defStr, searchStr).Tables[0];
+                foreach (DataRow row in productTable.Rows)
                 {
-                    DataGridViewButtonColumn update = new DataGridViewButtonColumn
-                    {
-                        Name = "Update",
-                        Text = "Редактировать",
-                        HeaderText = "Редактировать",
-                        UseColumnTextForButtonValue = true
-                    };
-                    dgProduct.Columns.Add(update);
-                    DataGridViewButtonColumn materials = new DataGridViewButtonColumn
-                    {
-                        Name = "Materials",
-                        Text = "Материалы",
-                        HeaderText = "Материалы",
-                        UseColumnTextForButtonValue = true
-                    };
-                    dgProduct.Columns.Add(materials);
-                    DataGridViewButtonColumn photo = new DataGridViewButtonColumn
-                    {
-                        Name = "Photo",
-                        Text = "Фото",
-                        HeaderText = "Фото",
-                        UseColumnTextForButtonValue = true
-                    };
-                    dgProduct.Columns.Add(photo);
                 }
-                dgProduct.AllowUserToResizeColumns = true;
-                dgProduct.AllowUserToResizeRows = true;
-                dgProduct.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader);
-                fill++;
             }
             catch (Exception ex)
             {
@@ -111,7 +81,7 @@ namespace FilterWinForms.FORMS
         private void cmbOrderBy_SelectedIndexChanged(object sender, EventArgs e)
         {
             order = cmbOrderBy.SelectedItem.ToString();
-            GridFill();
+            ProductsFill();
         }
 
         private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
@@ -120,7 +90,7 @@ namespace FilterWinForms.FORMS
             PageButtonsDelete();
             maxPage = ProductDataWork.GetMaxPages(type, defStr, searchStr);
             PageButtonsInit();
-            GridFill();
+            ProductsFill();
         }
 
         private void btnPreviousPage_Click(object sender, EventArgs e)
@@ -129,7 +99,7 @@ namespace FilterWinForms.FORMS
                 page--;
             if (PageButtonMinValue() > 1)
                 PageButtonsShift(false);
-            GridFill();
+            ProductsFill();
         }
 
         private void btnNextPage_Click(object sender, EventArgs e)
@@ -138,7 +108,7 @@ namespace FilterWinForms.FORMS
                 page++;
             if (PageButtonMaxValue()  < maxPage)
                 PageButtonsShift(true);
-            GridFill();
+            ProductsFill();
         }
 
         private void PageButtonsInit()
@@ -235,17 +205,17 @@ namespace FilterWinForms.FORMS
         {
             Button button = sender as Button;
             page = Int32.Parse(button.Text);
-            GridFill();
+            ProductsFill();
         }
 
         private void rbtnUp_CheckedChanged(object sender, EventArgs e)
         {
-            GridFill();
+            ProductsFill();
         }
 
         private void rbtnDesc_CheckedChanged(object sender, EventArgs e)
         {
-            GridFill();
+            ProductsFill();
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
@@ -254,7 +224,7 @@ namespace FilterWinForms.FORMS
             PageButtonsDelete();
             maxPage = ProductDataWork.GetMaxPages(type, defStr, searchStr);
             PageButtonsInit();
-            GridFill();
+            ProductsFill();
         }
     }
 }

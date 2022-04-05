@@ -29,11 +29,9 @@ namespace FilterWinForms.FORMS
         /// </summary>
         private void InitializeComponent()
         {
-            this.dgProduct = new System.Windows.Forms.DataGridView();
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.btnPreviousPage = new System.Windows.Forms.Button();
             this.btnNextPage = new System.Windows.Forms.Button();
-            this.PageLabel = new System.Windows.Forms.Label();
             this.cmbOrderBy = new System.Windows.Forms.ComboBox();
             this.rbtnUp = new System.Windows.Forms.RadioButton();
             this.rbtnDesc = new System.Windows.Forms.RadioButton();
@@ -43,19 +41,11 @@ namespace FilterWinForms.FORMS
             this.grbSearch = new System.Windows.Forms.GroupBox();
             this.btnPriceChange = new System.Windows.Forms.Button();
             this.btnAddProduct = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dgProduct)).BeginInit();
+            this.layoutProducts = new System.Windows.Forms.FlowLayoutPanel();
             this.grbOrder.SuspendLayout();
             this.grbFilter.SuspendLayout();
             this.grbSearch.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // dgProduct
-            // 
-            this.dgProduct.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgProduct.Location = new System.Drawing.Point(12, 142);
-            this.dgProduct.Name = "dgProduct";
-            this.dgProduct.Size = new System.Drawing.Size(937, 427);
-            this.dgProduct.TabIndex = 1;
             // 
             // cmbType
             // 
@@ -85,15 +75,6 @@ namespace FilterWinForms.FORMS
             this.btnNextPage.Text = ">";
             this.btnNextPage.UseVisualStyleBackColor = true;
             this.btnNextPage.Click += new System.EventHandler(this.btnNextPage_Click);
-            // 
-            // PageLabel
-            // 
-            this.PageLabel.AutoSize = true;
-            this.PageLabel.Location = new System.Drawing.Point(592, 582);
-            this.PageLabel.Name = "PageLabel";
-            this.PageLabel.Size = new System.Drawing.Size(50, 22);
-            this.PageLabel.TabIndex = 6;
-            this.PageLabel.Text = "label2";
             // 
             // cmbOrderBy
             // 
@@ -188,49 +169,50 @@ namespace FilterWinForms.FORMS
             this.btnAddProduct.Text = "Добавить продукцию";
             this.btnAddProduct.UseVisualStyleBackColor = true;
             // 
+            // layoutProducts
+            // 
+            this.layoutProducts.AutoScroll = true;
+            this.layoutProducts.Location = new System.Drawing.Point(13, 134);
+            this.layoutProducts.Name = "layoutProducts";
+            this.layoutProducts.Size = new System.Drawing.Size(936, 441);
+            this.layoutProducts.TabIndex = 18;
+            // 
             // ProductForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(961, 618);
+            this.Controls.Add(this.layoutProducts);
             this.Controls.Add(this.btnAddProduct);
             this.Controls.Add(this.btnPriceChange);
             this.Controls.Add(this.grbSearch);
             this.Controls.Add(this.grbFilter);
             this.Controls.Add(this.grbOrder);
-            this.Controls.Add(this.PageLabel);
             this.Controls.Add(this.btnNextPage);
             this.Controls.Add(this.btnPreviousPage);
-            this.Controls.Add(this.dgProduct);
             this.Name = "ProductForm";
             this.Text = "Form1";
-            this.Controls.SetChildIndex(this.dgProduct, 0);
             this.Controls.SetChildIndex(this.btnPreviousPage, 0);
             this.Controls.SetChildIndex(this.btnNextPage, 0);
-            this.Controls.SetChildIndex(this.PageLabel, 0);
             this.Controls.SetChildIndex(this.grbOrder, 0);
             this.Controls.SetChildIndex(this.grbFilter, 0);
             this.Controls.SetChildIndex(this.grbSearch, 0);
             this.Controls.SetChildIndex(this.btnPriceChange, 0);
             this.Controls.SetChildIndex(this.btnAddProduct, 0);
-            ((System.ComponentModel.ISupportInitialize)(this.dgProduct)).EndInit();
+            this.Controls.SetChildIndex(this.layoutProducts, 0);
             this.grbOrder.ResumeLayout(false);
             this.grbOrder.PerformLayout();
             this.grbFilter.ResumeLayout(false);
             this.grbSearch.ResumeLayout(false);
             this.grbSearch.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.DataGridView dgProduct;
         private System.Windows.Forms.ComboBox cmbType;
         private System.Windows.Forms.Button btnPreviousPage;
         private System.Windows.Forms.Button btnNextPage;
-        private System.Windows.Forms.Label PageLabel;
         private System.Windows.Forms.ComboBox cmbOrderBy;
         private System.Windows.Forms.RadioButton rbtnUp;
         private System.Windows.Forms.RadioButton rbtnDesc;
@@ -240,6 +222,7 @@ namespace FilterWinForms.FORMS
         private System.Windows.Forms.GroupBox grbSearch;
         private System.Windows.Forms.Button btnPriceChange;
         private System.Windows.Forms.Button btnAddProduct;
+        private System.Windows.Forms.FlowLayoutPanel layoutProducts;
     }
 }
 
