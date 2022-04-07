@@ -101,11 +101,11 @@ namespace FilterWinForms.FORMS
             // 
             // lblMaterials
             // 
-            this.lblMaterials.AutoSize = true;
+            this.lblMaterials.AutoEllipsis = true;
             this.lblMaterials.Font = new System.Drawing.Font("Gabriola", 14F, System.Drawing.FontStyle.Bold);
             this.lblMaterials.Location = new System.Drawing.Point(159, 79);
             this.lblMaterials.Name = "lblMaterials";
-            this.lblMaterials.Size = new System.Drawing.Size(102, 35);
+            this.lblMaterials.Size = new System.Drawing.Size(706, 57);
             this.lblMaterials.TabIndex = 6;
             this.lblMaterials.Text = "Материалы:";
             // 

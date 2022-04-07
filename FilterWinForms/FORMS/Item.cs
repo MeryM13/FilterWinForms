@@ -26,14 +26,20 @@ namespace FilterWinForms.FORMS
             lblName.Text = product.Name;
             lblPrice.Text = product.Price.ToString();
             lblID.Text = product.SKU;
-            lblMaterials.Text += MaterialsDataWork.GetMaterialsList(product);
-            if (!(string.IsNullOrEmpty(product.PicturePath)))
+            foreach (var material in DataWork.GetMaterialsList(product))
             {
-                Img.ImageLocation = @"FilterWinForms\IMAGES\" + product.PicturePath;
+                lblMaterials.Text += " " + material.Name + ",";
+            }
+            if (product.PicturePath != "нет")
+            {
+                string photo = product.PicturePath.Substring(1);
+                Image image = Image.FromFile($"{AppDomain.CurrentDomain.BaseDirectory}IMAGES\\{photo}");
+                Img.Image = image;
             }
             else
             {
-                Img.ImageLocation = @"FilterWinForms\IMAGES\picture.png";
+                Image image = Image.FromFile($"{AppDomain.CurrentDomain.BaseDirectory}IMAGES\\picture.png");
+                Img.Image = image;
             }
         }
     }

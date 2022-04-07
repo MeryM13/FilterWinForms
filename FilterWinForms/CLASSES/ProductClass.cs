@@ -13,7 +13,9 @@ namespace FilterWinForms.CLASSES
         public decimal MinPrice { get; set; }
         public string Type { get; set; }
         public int Workshop { get; set; }
+        public int Workers { get; set; }
         public string PicturePath { get; set; }
         public decimal Price { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace FilterWinForms.FORMS
         {
             type = defStr;
             order = "Отсутствует";
-            maxPage = ProductDataWork.GetMaxPages(type, defStr, searchStr);
+            maxPage = DataWork.GetMaxPages(type, defStr, searchStr);
             InitializeComponent();
             CmbTypeInit();
             CmbOrderByInit();
@@ -36,7 +36,7 @@ namespace FilterWinForms.FORMS
         {
             try
             {
-                foreach (string item in ProductDataWork.GetTypes(defStr))
+                foreach (string item in DataWork.GetTypes(defStr))
                     cmbType.Items.Add(item);
                 cmbType.SelectedItem = type;
             }
@@ -66,16 +66,20 @@ namespace FilterWinForms.FORMS
         {
             try
             {
-                DataTable productTable = ProductDataWork.GetProductByPage(type, page, order, rbtnUp.Checked? true: false, defStr, searchStr).Tables[0];
-                foreach (DataRow row in productTable.Rows)
+
+                layoutProducts.Controls.Clear();
+                foreach (var product in DataWork.GetProductListByPage(type, page, order, rbtnUp.Checked ? true : false, defStr, searchStr))
                 {
+                    Item item = new Item(product);
+                    item.Tag = "product";
+                    layoutProducts.Controls.Add(item);
                 }
+                layoutProducts.Refresh();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-
         }
 
         private void cmbOrderBy_SelectedIndexChanged(object sender, EventArgs e)
@@ -88,7 +92,7 @@ namespace FilterWinForms.FORMS
         {
             type = cmbType.SelectedItem.ToString();
             PageButtonsDelete();
-            maxPage = ProductDataWork.GetMaxPages(type, defStr, searchStr);
+            maxPage = DataWork.GetMaxPages(type, defStr, searchStr);
             PageButtonsInit();
             ProductsFill();
         }
@@ -222,7 +226,7 @@ namespace FilterWinForms.FORMS
         {
             searchStr = txtSearch.Text;
             PageButtonsDelete();
-            maxPage = ProductDataWork.GetMaxPages(type, defStr, searchStr);
+            maxPage = DataWork.GetMaxPages(type, defStr, searchStr);
             PageButtonsInit();
             ProductsFill();
         }

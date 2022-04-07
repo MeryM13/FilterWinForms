@@ -58,9 +58,9 @@ namespace FilterWinForms.FORMS
             // 
             // btnPreviousPage
             // 
-            this.btnPreviousPage.Location = new System.Drawing.Point(893, 581);
+            this.btnPreviousPage.Location = new System.Drawing.Point(894, 581);
             this.btnPreviousPage.Name = "btnPreviousPage";
-            this.btnPreviousPage.Size = new System.Drawing.Size(25, 25);
+            this.btnPreviousPage.Size = new System.Drawing.Size(24, 25);
             this.btnPreviousPage.TabIndex = 4;
             this.btnPreviousPage.Text = "<";
             this.btnPreviousPage.UseVisualStyleBackColor = true;
@@ -70,7 +70,7 @@ namespace FilterWinForms.FORMS
             // 
             this.btnNextPage.Location = new System.Drawing.Point(924, 581);
             this.btnNextPage.Name = "btnNextPage";
-            this.btnNextPage.Size = new System.Drawing.Size(25, 25);
+            this.btnNextPage.Size = new System.Drawing.Size(24, 25);
             this.btnNextPage.TabIndex = 5;
             this.btnNextPage.Text = ">";
             this.btnNextPage.UseVisualStyleBackColor = true;
@@ -122,7 +122,7 @@ namespace FilterWinForms.FORMS
             this.grbOrder.Controls.Add(this.cmbOrderBy);
             this.grbOrder.Controls.Add(this.rbtnUp);
             this.grbOrder.Controls.Add(this.rbtnDesc);
-            this.grbOrder.Location = new System.Drawing.Point(457, 7);
+            this.grbOrder.Location = new System.Drawing.Point(456, 7);
             this.grbOrder.Name = "grbOrder";
             this.grbOrder.Size = new System.Drawing.Size(240, 122);
             this.grbOrder.TabIndex = 13;
@@ -181,7 +181,7 @@ namespace FilterWinForms.FORMS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(961, 618);
+            this.ClientSize = new System.Drawing.Size(960, 618);
             this.Controls.Add(this.layoutProducts);
             this.Controls.Add(this.btnAddProduct);
             this.Controls.Add(this.btnPriceChange);
